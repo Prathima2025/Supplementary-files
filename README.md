@@ -1,128 +1,165 @@
-# Brain-Tumor-Detector
-Building a detection model using a convolutional neural network in Tensorflow & Keras.<br>
-Used a brain MRI images data founded on Kaggle. You can find it [here](17.	https://www.kaggle.com/datasets/rahimanshu/figshare-brain-tumor-classification).<br>
+TITLE
+Brain-Tumor-Detector
+A deep learning-based system for brain tumor detection and classification using CNN with TensorFlow and Keras.
 
-**About the data:**<br>
-The dataset contains 2 folders: yes and no which contains 253 Brain MRI Images. The folder yes contains 155 Brain MRI Images that are tumorous and the folder no contains 98 Brain MRI Images that are non-tumorous.
+INTRODUCTION
+Brain tumors represent one of the most life-threatening health conditions requiring early and accurate diagnosis. 
+Traditional manual analysis of MRI scans is time-consuming and prone to error. 
+Leveraging deep learning, particularly Convolutional Neural Networks (CNNs), allows for efficient and accurate detection of brain tumors from MRI scans. 
+This project builds a CNN-based detection model using a publicly available brain MRI dataset from Kaggle, applying data augmentation and preprocessing to improve performance. 
+The model achieves a test accuracy of 98.98%, highlighting its potential for real-world medical applications.
 
-# Getting Started
+DESCRIPTIONS
+This project implements a Convolutional Neural Network (CNN) from scratch to detect brain tumors from MRI images. 
+The model is designed to perform binary classification (tumor vs. non-tumor) and achieves high accuracy with data augmentation and custom architecture, addressing overfitting and limited computational resources.
 
-**Note:** sometimes viewing IPython notebooks using GitHub viewer doesn't work as expected, so you can always view them using [nbviewer](https://nbviewer.jupyter.org/).
-
-## Data Augmentation:
-
-**Why did I use data augmentation?**
-
-Since this is a small dataset, There wasn't enough examples to train the neural network. Also, data augmentation was useful in taclking the data imbalance issue in the data.<br>
-
-Further explanations are found in the Data Augmentation notebook.
-
-Before data augmentation, the dataset consisted of:<br>
-155 positive and 98 negative examples, resulting in 253 example images.
-
-After data augmentation, now the dataset consists of:<br>
-1085 positive and 980 examples, resulting in 2065 example images.
-
-**Note:** these 2065 examples contains also the 253 original images. They are found in folder named 'augmented data'.
-
-## Data Preprocessing
-
-For every image, the following preprocessing steps were applied:
-
-1. Crop the part of the image that contains only the brain (which is the most important part of the image).
-2. Resize the image to have a shape of (240, 240, 3)=(image_width, image_height, number of channels): because images in the dataset come in different sizes. So, all images should have the same shape to feed it as an input to the neural network.
-3. Apply normalization: to scale pixel values to the range 0-1.
-
-## Data Split:
-
-The data was split in the following way:
-1. 70% of the data for training.
-2. 15% of the data for validation.
-3. 15% of the data for testing.
-
-# Neural Network Architecture
-
-This is the architecture that I've built:
-
-![Neural Network Architecture](convnet_architecture.jpg)
-
-**Understanding the architecture:**<br>
-Each input x (image) has a shape of (240, 240, 3) and is fed into the neural network. And, it goes through the following layers:<br>
-
-1. A Zero Padding layer with a pool size of (2, 2).
-2. A convolutional layer with 32 filters, with a filter size of (7, 7) and a stride equal to 1.
-3. A batch normalization layer to normalize pixel values to speed up computation.
-4. A ReLU activation layer.
-5. A Max Pooling layer with f=4 and s=4.
-6. A Max Pooling layer with f=4 and s=4, same as before.
-7. A flatten layer in order to flatten the 3-dimensional matrix into a one-dimensional vector.
-8. A Dense (output unit) fully connected layer with one neuron with a sigmoid activation (since this is a binary classification task).
-
-**Why this architecture?**<br>
-
-Firstly, I applied transfer learning using a ResNet50 and vgg-16, but these models were too complex to the data size and were overfitting. Of course, you may get good results applying transfer learning with these models using data augmentation. But, I'm using training on a computer with 6th generation Intel i7 CPU and 8 GB memory. So, I had to take into consideration computational complexity and memory limitations.<br>
-
-So why not try a simpler architecture and train it from scratch. And it worked :)
-
-# Training the model
-The model was trained for 24 epochs and these are the loss & accuracy plots:
+DATASET INFORMATION
+Source: Kaggle - Brain Tumor Classification
+Classes:
+yes: 155 MRI images with brain tumors
+no: 98 MRI images without tumors
+After Augmentation:
+1085 positive images
+980 negative images
+Total: 2065 images (including originals)
 
 
-![Loss plot](Loss.PNG)
+CODE INFORMATION
+1. Data Augmentation
+To counter dataset imbalance and improve generalization:
+Techniques used: Rotation, Zoom, Flip, etc.
+Resulting dataset: 1085 (tumor) + 980 (non-tumor) = 2065 images
+
+2. Preprocessing
+Crop brain-only region
+Resize to (240, 240, 3)
+Normalize pixel values to [0, 1]
+
+3. Model Architecture
+Custom CNN with the following layers:
+Zero Padding
+Conv2D (32 filters, 7x7)
+Batch Normalization
+ReLU Activation
+MaxPooling (twice)
+Flatten
+Dense with Sigmoid (binary output)
+Simpler architecture chosen over ResNet/VGG due to overfitting and limited hardware resources.
+
+4. Performance
+Accuracy on test set: 98.98%
+F1 Score: 0.88
+Outperformed other models (CNN-LSTM, Caps-VGGNet)
 
 
-![Accuracy plot](Accuracy.PNG)
+USAGE INSTRUCTIONS
+Download Dataset
+The brain MRI dataset can be downloaded from Kaggle: Brain Tumor Classification Dataset.
+The dataset has two folders: yes (tumorous) and no (non-tumorous).
 
-The best validation accuracy was achieved on the 23rd iteration.
+Data Preparation
+Images are preprocessed by cropping the brain region, resizing to (240, 240, 3), and normalizing pixel values to [0, 1].
+Augmented data (stored in the augmented data folder) increases total samples to 2065 for balanced training.
 
-# Results
+Train-Test Split
+Data is split into 70% training, 15% validation, and 15% testing.
 
-Now, the best model (the one with the best validation accuracy) detects brain tumor with:<br>
-
-**98.98%** accuracy on the **test set**.<br>
-**0.88** f1 score on the **test set**.<br>
-These resutls are very good considering that the data is balanced.
-
-**Performance table of the best model:**
-
-Model	Accuracy	PSNR	Localization Accuracy
-CNN-LSTM	92.33%	88.13	92.33%
-Caps-VGGNet	96.15%	84.31	96.15%
-Proposed	98.15%	97.71	98.98%
-
-
-## Results
-
-* **Brain Tumor Detection**
-
-![Tumor Detection](https://miro.medium.com/max/786/1*QC-csJq551xlTomLleUimA.webp)
-
-* **Brain Tumor Detection and Prediction**
-
-![Tumor Detection](https://miro.medium.com/max/786/1*m2I_BEBmwBeGn7O9ZrFJ7w.webp)
-
-## Also
-
-If you want to learn the architecture of Mask R-CNN, You can reach out my medium article about "Image Segmentation with Mask R-CNN" on this link [Medium Article](https://medium.com/@ilhnsevval/mask-r-cnn-4535e5247028)
-# Final Notes
-
-What's in the files?
-
-1. The code in the IPython notebooks.
-2. The weights for all the models. The best model is named as 'cnn-parameters-improvement-23-0.91.model'.
-3. The models are stored as *.model* files. They can be restored as follows:
-
-
-```
+Load Trained Model
+The best trained model file is named: cnn-parameters-improvement-23-0.91.model
+Load it using:
+python
+Copy
+Edit
 from tensorflow.keras.models import load_model
 best_model = load_model(filepath='models/cnn-parameters-improvement-23-0.91.model')
-```
 
-4. The original data in the folders named 'yes' and 'no'. And, the augmented data in the folder named 'augmented data'.
+Run Code
+Use the Jupyter/IPython notebooks provided in the repository to run training, testing, and analysis steps.
 
 
-Contributes are welcome!
-<br>Thank you!
+REQUIREMENTS
+The project requires the following Python libraries:
+TensorFlow – for building and training the CNN model (tensorflow.keras used for model loading).
+Keras – high-level neural networks API (integrated into TensorFlow).
+NumPy – for numerical operations and handling image arrays.
+Matplotlib – for plotting training and validation metrics (loss and accuracy plots).
+OpenCV / PIL – (likely used) for image preprocessing like cropping, resizing, and normalization.
+scikit-learn – for evaluation metrics like accuracy, F1-score, and train-test splitting.
+
+
+IMPLEMENTATION STEPS
+Step 1: Install Required Libraries
+bash
+Copy
+Edit
+pip install tensorflow keras numpy matplotlib opencv-python
+
+Step 2: Load and Preprocess the Dataset
+python
+Copy
+Edit
+import cv2, os
+import numpy as np
+def preprocess_image(img_path):
+    img = cv2.imread(img_path)
+    img = cv2.resize(img, (240, 240))
+    img = img / 255.0  # Normalize
+    return img
+# Example:
+img = preprocess_image('yes/image(1).jpg')
+
+Step 3: Split Dataset
+python
+Copy
+Edit
+from sklearn.model_selection import train_test_split
+
+# X, y = np.array(images), np.array(labels)
+X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.3, stratify=y)
+X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, stratify=y_temp)
+
+Step 4: Build CNN Model
+python
+Copy
+Edit
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, BatchNormalization, Activation, ZeroPadding2D
+model = Sequential([
+    ZeroPadding2D((2, 2), input_shape=(240, 240, 3)),
+    Conv2D(32, (7, 7), strides=(1, 1)),
+    BatchNormalization(),
+    Activation('relu'),
+    MaxPooling2D(pool_size=(4, 4), strides=(4, 4)),
+    MaxPooling2D(pool_size=(4, 4), strides=(4, 4)),
+    Flatten(),
+    Dense(1, activation='sigmoid')
+])
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+Step 5: Train the Model
+python
+Copy
+Edit
+history = model.fit(X_train, y_train, epochs=24, validation_data=(X_val, y_val))
+
+Step 6: Evaluate and Save Model
+python
+Copy
+Edit
+model.evaluate(X_test, y_test)
+model.save('cnn-parameters-improvement-23-0.91.model')
+
+Step 7: Load and Predict
+python
+Copy
+Edit
+from tensorflow.keras.models import load_model
+model = load_model('cnn-parameters-improvement-23-0.91.model')
+predictions = model.predict(X_test)
+
+
+CITATION
+https://www.kaggle.com/datasets/rahimanshu/figshare-brain-tumor-classification).<br>
 
 
 
