@@ -1,19 +1,19 @@
-TITLE
+TITLE : 
 Brain-Tumor-Detector
 A deep learning-based system for brain tumor detection and classification using CNN with TensorFlow and Keras.
 
-INTRODUCTION
+INTRODUCTION : 
 Brain tumors represent one of the most life-threatening health conditions requiring early and accurate diagnosis. 
 Traditional manual analysis of MRI scans is time-consuming and prone to error. 
 Leveraging deep learning, particularly Convolutional Neural Networks (CNNs), allows for efficient and accurate detection of brain tumors from MRI scans. 
 This project builds a CNN-based detection model using a publicly available brain MRI dataset from Kaggle, applying data augmentation and preprocessing to improve performance. 
 The model achieves a test accuracy of 98.98%, highlighting its potential for real-world medical applications.
 
-DESCRIPTIONS
+DESCRIPTIONS: 
 This project implements a Convolutional Neural Network (CNN) from scratch to detect brain tumors from MRI images. 
 The model is designed to perform binary classification (tumor vs. non-tumor) and achieves high accuracy with data augmentation and custom architecture, addressing overfitting and limited computational resources.
 
-DATASET INFORMATION
+DATASET INFORMATION:
 Source: Kaggle - Brain Tumor Classification
 Classes:
 yes: 155 MRI images with brain tumors
@@ -24,7 +24,7 @@ After Augmentation:
 Total: 2065 images (including originals)
 
 
-CODE INFORMATION
+CODE INFORMATION:
 1. Data Augmentation
 To counter dataset imbalance and improve generalization:
 Techniques used: Rotation, Zoom, Flip, etc.
@@ -77,7 +77,7 @@ Run Code
 Use the Jupyter/IPython notebooks provided in the repository to run training, testing, and analysis steps.
 
 
-REQUIREMENTS
+REQUIREMENTS:
 The project requires the following Python libraries:
 TensorFlow – for building and training the CNN model (tensorflow.keras used for model loading).
 Keras – high-level neural networks API (integrated into TensorFlow).
@@ -87,7 +87,7 @@ OpenCV / PIL – (likely used) for image preprocessing like cropping, resizing, 
 scikit-learn – for evaluation metrics like accuracy, F1-score, and train-test splitting.
 
 
-IMPLEMENTATION STEPS
+IMPLEMENTATION STEPS:
 Step 1: Install Required Libraries
 bash
 Copy
@@ -158,7 +158,7 @@ model = load_model('cnn-parameters-improvement-23-0.91.model')
 predictions = model.predict(X_test)
 
 
-CITATION
+CITATION:
 https://www.kaggle.com/datasets/rahimanshu/figshare-brain-tumor-classification).<br>
 
 
